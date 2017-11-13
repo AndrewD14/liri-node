@@ -5,7 +5,7 @@ var keys = require("./keys.js");
 var Twitter = require('twitter');
 
 //creates a variable to execute the request to twitter
-var client = new Twitter(keys);
+var client = new Twitter(keys.twitterKeys);
 
 //calls the api to get the 20 most recent tweets
 exports.getTweets = function(){
