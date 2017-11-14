@@ -1,25 +1,9 @@
 //includes external js files
-var twitter = require('./js/twitter.js');
-var spotify = require('./js/spotify.js');
+var liri = require('./js/liri-brains.js');
+
+var arguments = [];
+for(var i = 2; i < process.argv.length; i++)
+	arguments.push(process.argv[i]);
 
 //executes the main function
-processCommand();
-
-function processCommand(){
-	var command = process.argv[2];
-
-	console.log(command)
-	switch(command.toLowerCase()){
-		case "my-tweets":
-			console.log("Calling twitter function");
-			twitter.getTweets();
-			break;
-		case "spotify-this-song":
-			console.log("Calling spotify function");
-			spotify.searchSongTitle(process.argv[3]);
-			break;
-		default:
-			console.log(command+" is not a valid command.");
-			break;
-	}
-}
+liri.processCommand(arguments);
