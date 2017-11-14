@@ -9,8 +9,8 @@ var spotify = new Spotify(keys.spotifyKeys);
 
 //searchs for a track using the provide song title
 exports.searchSongTitle = function(title){
-	//cehcks if no song title was inputted
-	if(title == "" || title == null)
+	//cehcks if no song title was inputted, if nothing, defaults to "The Sign" by Ace of Base
+	if(title == null)
 		title = "The Sign";
 
 	spotify.search({ type: 'track', query: title }, function(err, data) {

@@ -7,4 +7,4 @@ for(var i = 2; i < process.argv.length; i++)
 	arguments.push(process.argv[i]);
 
 //executes the main function
-liri.processCommand(arguments);
+liri.processCommand(arguments, false);

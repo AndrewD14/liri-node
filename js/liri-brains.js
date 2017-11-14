@@ -4,7 +4,7 @@ var spotify = require('./spotify.js');
 var streamFile = require('./fileReader.js');
 var omdb = require('./omdb.js');
 
-exports.processCommand = function(command){
+exports.processCommand = function(command, ranBefore){
 	console.log(command[0])
 	if(command[0] == null)
 		console.log("Nothing was entered");
@@ -16,22 +16,19 @@ exports.processCommand = function(command){
 				break;
 			case "spotify-this-song":
 				console.log("Calling spotify function");
-				if(command.length >= 2)
-					spotify.searchSongTitle(command[1]);
-				else
-					spotify.searchSongTitle(null);
+				spotify.searchSongTitle(command[1]);
 				break;
 			case "movie-this":
 				console.log("Calling omdb api function");
-				if(command.length >= 2)
-					omdb.getMovieInfo(command[1]);
-				else
-					omdb.getMovieInfo(null);
-				break;
+				omdb.getMovieInfo(command[1]);
 				break;
 			case "do-what-it-says":
-				console.log("do what it says");
-				streamFile.readFile();
+				if(ranBefore)
+					console.log("Already read in a file. Stopping to prevent a loop.");
+				else{
+					console.log("do what it says");
+					streamFile.readFile(command[1]);
+				}
 				break;
 			default:
 				console.log(command+" is not a valid command.");

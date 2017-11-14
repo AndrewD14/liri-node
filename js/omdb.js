@@ -9,6 +9,9 @@ var qs = require('query-string');
 
 //function to pulls the info
 exports.getMovieInfo = function(search){
+	//checks if a movie title was passed in, if none, default to Mr. Nobody
+	if(!search)
+		search = "Mr. Nobody";
 	//url
 	var url = 'http://www.omdbapi.com/?';
 
