@@ -2,6 +2,7 @@
 var twitter = require('./twitter.js');
 var spotify = require('./spotify.js');
 var streamFile = require('./fileReader.js');
+var omdb = require('./omdb.js');
 
 exports.processCommand = function(command){
 	console.log(command[0])
@@ -15,10 +16,18 @@ exports.processCommand = function(command){
 				break;
 			case "spotify-this-song":
 				console.log("Calling spotify function");
-				if(arguments.length >= 2)
-					spotify.searchSongTitle(arguments[1]);
+				if(command.length >= 2)
+					spotify.searchSongTitle(command[1]);
 				else
 					spotify.searchSongTitle(null);
+				break;
+			case "movie-this":
+				console.log("Calling omdb api function");
+				if(command.length >= 2)
+					omdb.getMovieInfo(command[1]);
+				else
+					omdb.getMovieInfo(null);
+				break;
 				break;
 			case "do-what-it-says":
 				console.log("do what it says");

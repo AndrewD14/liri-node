@@ -14,9 +14,7 @@ exports.searchSongTitle = function(title){
 		title = "The Sign";
 
 	spotify.search({ type: 'track', query: title }, function(err, data) {
-		if (err) {
-		return console.log('Error occurred: ' + err);
-		}
+		if (err) throw err;
 	 
 		console.log(JSON.stringify(data)); 
 	})

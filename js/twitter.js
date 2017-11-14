@@ -4,7 +4,7 @@ var keys = require("./keys.js");
 //imports the module for twitter npm package for use
 var Twitter = require('twitter');
 
-//creates a variable to execute the request to twitter
+//creates an object to execute the request to twitter
 var client = new Twitter(keys.twitterKeys);
 
 //calls the api to get the 20 most recent tweets
@@ -16,8 +16,7 @@ exports.getTweets = function(){
 
 //function for the callback of the client
 function processTwitterRequest(err, tweets, response){
-	if(err)
-		console.log(err);
+	if(err) throw err;
 
 	console.log(tweets);
 }
