@@ -19,11 +19,36 @@ exports.getMovieInfo = function(search){
 	var parameters = keys.omdbKeys;
 	parameters.s = search;
 
-	//executes the api request
+	//executes the api request to search
 	Request(url+qs.stringify(parameters), function(err, response, body){
 		//throws the error
 		if(err) throw err;
 
-		console.log(JSON.stringify(response));
+		var results = JSON.parse(body);
+
+		if(results.Search.length == 0)
+			console.log("No movie was found with the title of "+search+".");
+		else{
+			//uses the first search result to pull movie info
+			parameters = keys.omdbKeys;
+			parameters.i = results.Search[0].imdbID;
+			delete parameters["s"]; //removes the search parameter
+
+			Request(url+qs.stringify(parameters), function(err, response, body){
+				//throws the error
+				if(err) throw err;
+
+				results = JSON.parse(body);
+
+				console.log("Title: "+results.Title);
+				console.log("Year: "+results.Year);
+				console.log("IMDB Raiting: "+results.Ratings[0].Value);
+				console.log("Rotten Tomatoes Raiting: "+results.Ratings[1].Value);
+				console.log("Country: "+results.Country);
+				console.log("Language: "+results.Language);
+				console.log("Plot: "+results.Plot);
+				console.log("Actors: "+results.Actors);
+			});
+		}
 	});
 }
