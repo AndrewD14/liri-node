@@ -11,6 +11,7 @@ var client = new Twitter(keys.twitterKeys);
 exports.getTweets = function(){
 	//parameters
 	var params = {count: 20};
+	
 	client.get("statuses/user_timeline", params, processTwitterRequest);
 }
 
@@ -18,5 +19,9 @@ exports.getTweets = function(){
 function processTwitterRequest(err, tweets, response){
 	if(err) throw err;
 
-	console.log(tweets);
+	//loops through the tweets and outputs them to the console
+	for(i in tweets){
+		var createTime = new Date(tweets[i].created_at);
+		console.log(createTime.toLocaleDateString()+" "+createTime.toLocaleTimeString()+ ": "+tweets[i].text);
+	}
 }
