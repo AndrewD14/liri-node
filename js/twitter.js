@@ -16,7 +16,7 @@ exports.getTweets = function(){
 }
 
 //function for the callback of the client
-function processTwitterRequest(err, tweets, response){
+function processTwitterRequest(err, tweets, response, logger){
 	if(err) throw err;
 
 	//loops through the tweets and outputs them to the console

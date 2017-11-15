@@ -1,23 +1,26 @@
 //gets keys to use for the API
 var keys = require("./keys.js");
 
-//imports the module for Request npm package for use
+//imports the modules for use
 var Request = require('request');
-
-//imports the module for query-string npm package for use
+var Winston = require('winston');
 var qs = require('query-string');
 
 //function to pulls the info
-exports.getMovieInfo = function(search){
+exports.getMovieInfo = function(search, logger){
 	//checks if a movie title was passed in, if none, default to Mr. Nobody
-	if(!search)
+	if(!search){
 		search = "Mr. Nobody";
+		logger.info("No movie title was inputted. Defaulting to \"Mr. Nobody\".");
+	}
 	//url
 	var url = 'http://www.omdbapi.com/?';
 
 	//url parameters
 	var parameters = keys.omdbKeys;
 	parameters.s = search;
+
+	logger.info("Searching for: "+search);
 
 	//executes the api request to search
 	Request(url+qs.stringify(parameters), function(err, response, body){
@@ -26,8 +29,10 @@ exports.getMovieInfo = function(search){
 
 		var results = JSON.parse(body);
 
-		if(results.Search.length == 0)
+		if(results.Search.length == 0){
 			console.log("No movie was found with the title of "+search+".");
+			logger.warn("No movie was found with the title of "+search+".");
+		}
 		else{
 			//uses the first search result to pull movie info
 			parameters = keys.omdbKeys;
@@ -48,6 +53,15 @@ exports.getMovieInfo = function(search){
 				console.log("Language: "+results.Language);
 				console.log("Plot: "+results.Plot);
 				console.log("Actors: "+results.Actors);
+
+				logger.info("Title: "+results.Title);
+				logger.info("Year: "+results.Year);
+				logger.info("IMDB Raiting: "+results.Ratings[0].Value);
+				logger.info("Rotten Tomatoes Raiting: "+results.Ratings[1].Value);
+				logger.info("Country: "+results.Country);
+				logger.info("Language: "+results.Language);
+				logger.info("Plot: "+results.Plot);
+				logger.info("Actors: "+results.Actors);
 			});
 		}
 	});

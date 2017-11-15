@@ -1,22 +1,29 @@
 //includes external js files
 var liri = require('./liri-brains.js');
 
-//creates object to read a file
+//imports the modules for use
 var FileReader = require("fs");
+var Winston = require('winston');
 
-exports.readFile = function(file){
+exports.readFile = function(file, logger){
 	//checks to make sure a file name was passed in
-	if(!file)
-		console.log("No file name and path was entered.")
+	if(!file){
+		console.log("No file name and path was entered.");
+		logger.error("No file name and path was entered.");
+	}
 	else{
+		logger.info("Reading in file: "+file);
 		FileReader.readFile(file, "utf8", function(err, data){
 			if(err) throw err;
 
 			//splits the line up into input arguments
 			var commands = data.split(",");
 
+			//logs the values
+			logger.info("Commands pulled from the file: "+commands);
+
 			//calls the liri app again with the new commands
-			liri.processCommand(commands, true);
+			liri.processCommand(commands, true, logger);
 		});
 	}
 }

@@ -4,41 +4,44 @@ var spotify = require('./spotify.js');
 var streamFile = require('./fileReader.js');
 var omdb = require('./omdb.js');
 
-exports.processCommand = function(command, ranBefore){
-	console.log(command[0])
+//includes the require objects
+var Winston = require('winston');
+
+exports.processCommand = function(command, ranBefore, logger){
 	if(command[0] == null)
-		console.log("Nothing was entered");
+		logger.error("Nothing was entered");
 	else{
 		try{
 			switch(command[0].toLowerCase()){
 				case "my-tweets":
-					console.log("Calling twitter function");
+					logger.info("Calling twitter function");
 					twitter.getTweets();
 					break;
 				case "spotify-this-song":
-					console.log("Calling spotify function");
-					spotify.searchSongTitle(command[1]);
+					logger.info("Calling spotify function");
+					spotify.searchSongTitle(command[1], logger);
 					break;
 				case "movie-this":
-					console.log("Calling omdb api function");
-					omdb.getMovieInfo(command[1]);
+					logger.info("Calling omdb api function");
+					omdb.getMovieInfo(command[1], logger);
 					break;
 				case "do-what-it-says":
 					if(ranBefore)
-						console.log("Already read in a file. Stopping to prevent a loop.");
+						logger.info("Already read in a file. Stopping to prevent a loop.");
 					else{
-						console.log("do what it says");
-						streamFile.readFile(command[1]);
+						logger.info("do what it says");
+						streamFile.readFile(command[1], logger);
 					}
 					break;
 				default:
 					console.log(command+" is not a valid command.");
+					logger.error(command+" is not a valid command.");
 					break;
 			}
 		}
 		catch (err){
-			console.log("There was an error executing command: "+command[0]);
-			console.log(err);
+			logger.error("There was an error executing command: "+command[0]);
+			logger.error(err);
 		}
 	}
 }
