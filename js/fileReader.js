@@ -14,16 +14,24 @@ exports.readFile = function(file, logger){
 	else{
 		logger.info("Reading in file: "+file);
 		FileReader.readFile(file, "utf8", function(err, data){
-			if(err) throw err;
+			if(err){
+				if(err.code === 'ENOENT'){
+					console.log(file+" was not found.")
+					logger.error(file+" was not found.\n"+err);
+				}
+				else
+					throw err;
+			}
+			else{
+				//splits the line up into input arguments
+				var commands = data.split(",");
 
-			//splits the line up into input arguments
-			var commands = data.split(",");
+				//logs the values
+				logger.info("Commands pulled from the file: "+commands);
 
-			//logs the values
-			logger.info("Commands pulled from the file: "+commands);
-
-			//calls the liri app again with the new commands
-			liri.processCommand(commands, true, logger);
+				//calls the liri app again with the new commands
+				liri.processCommand(commands, true, logger);
+			}
 		});
 	}
 }
