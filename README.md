@@ -10,11 +10,11 @@ In a command line interface of your choosing, run node liri.js [command, paramet
 You need node.js to execute the application.
 
 ### Installing
-
+```
 1.Open a command line interface.
 2. Navigate to the folder where the liri app is located.
 3. Type npm install
-
+```
 
 ## Running
 
